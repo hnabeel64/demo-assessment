@@ -34,4 +34,10 @@ class AuthController extends Controller
     public function dashboard(){
         return view('SuperAdmin.index');
     }
+
+    public function logout(){
+        Auth::guard('superadmin')->logout();
+        Session::regenerate();
+        return redirect('/login');
+    }
 }

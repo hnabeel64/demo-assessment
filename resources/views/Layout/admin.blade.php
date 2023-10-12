@@ -1,10 +1,10 @@
 @extends('Layout.master')
 @section('main')
 <div id="wrapper">
-    @include('SuperAdmin.Components.sidebar')
+    @include('Admin.Components.sidebar')
     <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                @include('SuperAdmin.Components.nav')
+                @include('Admin.Components.nav')
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 

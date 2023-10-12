@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,9 +19,18 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
+        $subdomain = Arr::first(explode('.', request()->getHost()));
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
+            if(Auth::guard('admin')->check()){
+                $checkdomains = User::where('id', auth()->guard('admin')->user()->id)->whereHas('domains', function($q) use($subdomain){
+                    $q->where('domain_name', $subdomain);
+                })->exists();
+                if($checkdomains){
+                    return redirect('/dashboard');
+                }
+            }
             if (Auth::guard($guard)->check()) {
                 return redirect(RouteServiceProvider::HOME);
             }
