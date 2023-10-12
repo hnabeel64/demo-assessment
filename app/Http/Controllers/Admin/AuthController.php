@@ -50,7 +50,7 @@ class AuthController extends Controller
 
     public function logout(){
         Auth::guard('admin')->logout();
-        Session::regenerate();
+        Session::flush();
         return redirect('/login');
     }
 
